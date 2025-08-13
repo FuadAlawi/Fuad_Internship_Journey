@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuad Al Alawi - Bank Aljazira Internship Portfolio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-gradient-alt: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            overflow-x: hidden;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 { font-size: clamp(2rem, 4vw, 3rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* ===== LAYOUT COMPONENTS ===== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            padding: 5rem 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: var(--transition-slow);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: var(--bg-gradient);
+            color: white;
+            text-align: center;
+            padding: 8rem 0 6rem;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+            animation: gradientShift 15s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInDown 1s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            animation: slideInUp 1s ease 0.3s both;
+        }
+
+        .hero .summary {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease 0.6s both;
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            background: var(--bg-primary);
+            margin: 3rem 0;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-header {
+            background: var(--bg-gradient);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>') repeat;
+            opacity: 0.5;
+        }
+
+        .section-header h2 {
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #ffffff;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-content {
+            padding: 3rem 2rem;
+        }
+
+        /* ===== ACKNOWLEDGMENT CARD ===== */
+        .acknowledgment-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-left: 5px solid var(--primary-color);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .acknowledgment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+
+        .acknowledgment-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .acknowledgment-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .acknowledgment-card p {
+            font-size: 1.1rem;
+            color: #1f2937;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        /* ===== STATS GRID ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: var(--bg-gradient);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover::before {
+            left: 0;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-color);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            display: block;
+            background: var(--bg-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        /* ===== CHART CONTAINERS ===== */
+        .chart-container {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-lg);
+            padding: 2.5rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            margin: 1.5rem 0;
+        }
+
+        /* ===== TOOLS GRID ===== */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(37, 99, 235, 0.03) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: var(--transition);
+        }
+
+        .tool-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-color);
+        }
+
+        .tool-card h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tool-card p {
+            color: #1f2937;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+            font-weight: 500;
+        }
+
+        /* ===== FLOATING ELEMENTS ===== */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            top: 40%;
+            left: 80%;
+            animation-delay: 4s;
+        }
+
+        .floating-circle:nth-child(4) {
+            width: 60px;
+            height: 60px;
+            top: 80%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.1) rotate(180deg);
+            }
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .count-animation {
+            animation: countUp 0.8s ease;
+        }
+
+        /* ===== SCROLLBAR STYLING ===== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .hero {
+                padding: 6rem 0 4rem;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .section-content {
+                padding: 2rem 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .stat-card,
+            .tool-card {
+                padding: 1.5rem;
+            }
+            
+            .chart-container {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== LOADING ANIMATION ===== */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h1>Fuad Al Alawi</h1>
+                <p class="subtitle">IT Security Intern | Bank Aljazira</p>
+                <p class="summary">I spent more than two months gaining valuable skills and hands-on experience in IT security, network monitoring, compliance, and policy review, security solutions. This portfolio showcases my journey, achievements, and the professional growth I experienced during my internship.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Acknowledgments Section -->
+    <section class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Acknowledgments</h2>
+                    <p>Gratitude to those who guided my journey</p>
+                </div>
+                <div class="section-content">
+                    <div class="acknowledgment-card">
+                        <h3><i class="fas fa-heart" style="color: #ef4444; margin-right: 0.5rem;"></i>Special Thanks</h3>
+                        <p>I would like to extend my heartfelt gratitude to my supervisor <strong>Mr. Mohammed Bukhari</strong>, as well as <strong>Raghad Kayal</strong> and <strong>Omer Bushra</strong> for their continuous guidance, mentorship, and unwavering support throughout my training. Their expertise and encouragement were instrumental in my professional development and success during this internship.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Achievements & Impact</h2>
+                    <p>Measurable results from my internship journey</p>
+                </div>
+                <div class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="67">0</span>
+                            <div class="stat-label"><i class="fas fa-users" style="margin-right: 0.5rem;"></i>Meetings Attended</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="600">0</span>
+                            <div class="stat-label"><i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>Findings & Observations Closed</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="16">0</span>
+                            <div class="stat-label"><i class="fas fa-file-alt" style="margin-right: 0.5rem;"></i>Reports & Documentation Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="300">0</span>
+                            <div class="stat-label"><i class="fas fa-shield-alt" style="margin-right: 0.5rem;"></i>Policies Reviewed & Updated</div>
+                        </div>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 700;">
+                            <i class="fas fa-chart-line" style="margin-right: 0.5rem;"></i>Compliance Improvement
+                        </h3>
+                        <div class="chart-wrapper">
+                            <canvas id="complianceChart"></canvas>
+                        </div>
+                        <p style="text-align: center; color: #1f2937; margin-top: 1rem; font-style: italic; font-weight: 500;">
+                            <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+                            Increased compliance from 75% to 90% during the internship period (as noted by Mr. Ahmed Saleh)
+                        </p>
+                    </div>
+
+                    <div class="chart-container">
+                        <h3 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem; font-weight: 700;">
+                            <i class="fas fa-chart-pie" style="margin-right: 0.5rem;"></i>Achievement Breakdown
+                        </h3>
+                        <div class="chart-wrapper">
+                            <canvas id="achievementChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools & Technologies Section -->
+    <section class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Tools & Technologies</h2>
+                    <p>Hands-on experience with enterprise security solutions</p>
+                </div>
+                <div class="section-content">
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <h3><i class="fas fa-shield-virus" style="margin-right: 0.5rem;"></i>F5 VPN</h3>
+                            <p>Configured and managed secure remote access solutions, ensuring encrypted connections for remote workers.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-mobile-alt" style="margin-right: 0.5rem;"></i>Microsoft Intune</h3>
+                            <p>Deployed and managed mobile device policies, application management, and endpoint security configurations.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-user-shield" style="margin-right: 0.5rem;"></i>Microsoft Defender for Identity</h3>
+                            <p>Monitored and analyzed identity-based threats, investigated security incidents and implemented protective measures.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-network-wired" style="margin-right: 0.5rem;"></i>Forescout (NAC)</h3>
+                            <p>Implemented network access control policies, device classification, and automated threat response mechanisms.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-desktop" style="margin-right: 0.5rem;"></i>Symantec Endpoint Protection</h3>
+                            <p>Managed enterprise endpoint security, malware detection, and incident response across the organization.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-search" style="margin-right: 0.5rem;"></i>Tenable Vulnerability Management</h3>
+                            <p>Conducted comprehensive vulnerability assessments, risk analysis, and remediation planning.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-bug" style="margin-right: 0.5rem;"></i>Qualys VMDR</h3>
+                            <p>Performed vulnerability scanning, asset discovery, and continuous security monitoring across IT infrastructure.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-chart-bar" style="margin-right: 0.5rem;"></i>Security Information and Event Management (SIEM)</h3>
+                            <p>Analyzed security logs, created custom dashboards, and developed incident response procedures.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-eye" style="margin-right: 0.5rem;"></i>Network Security Monitoring</h3>
+                            <p>Implemented real-time network monitoring, traffic analysis, and anomaly detection systems.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-clipboard-check" style="margin-right: 0.5rem;"></i>Compliance Management Tools</h3>
+                            <p>Utilized automated compliance tracking, policy management, and regulatory reporting solutions.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>Risk Assessment Frameworks</h3>
+                            <p>Applied industry-standard risk assessment methodologies and security control frameworks.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-exclamation-circle" style="margin-right: 0.5rem;"></i>Incident Response Platforms</h3>
+                            <p>Coordinated security incident investigations, documentation, and remediation workflows.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Soft Skills Section -->
+    <section class="section">
+        <div class="container">
+            <div class="content-section">
+                <div class="section-header">
+                    <h2>Soft Skills & Professional Development</h2>
+                    <p>Interpersonal skills and competencies developed during my internship</p>
+                </div>
+                <div class="section-content">
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <h3><i class="fas fa-users" style="margin-right: 0.5rem;"></i>Team Collaboration</h3>
+                            <p>Effectively collaborated with cross-functional teams, participated in 67 meetings, and contributed to group projects while maintaining open communication and fostering positive working relationships.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-comments" style="margin-right: 0.5rem;"></i>Communication Skills</h3>
+                            <p>Developed strong verbal and written communication abilities through presenting findings, writing 16 comprehensive reports, and effectively communicating complex security concepts to stakeholders at all levels.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-lightbulb" style="margin-right: 0.5rem;"></i>Problem Solving</h3>
+                            <p>Demonstrated analytical thinking and creative problem-solving skills while addressing 600+ security findings, developing innovative solutions for complex security challenges, and implementing effective remediation strategies.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-clock" style="margin-right: 0.5rem;"></i>Time Management</h3>
+                            <p>Successfully managed multiple priorities, met deadlines consistently, and balanced various responsibilities including policy reviews, incident response, and ongoing security monitoring tasks.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-graduation-cap" style="margin-right: 0.5rem;"></i>Continuous Learning</h3>
+                            <p>Maintained a growth mindset by actively seeking knowledge about new security technologies, staying updated with industry best practices, and adapting to evolving cybersecurity threats and solutions.</p>
+                        </div>
+                        <div class="tool-card">
+                            <h3><i class="fas fa-handshake" style="margin-right: 0.5rem;"></i>Professional Etiquette</h3>
+                            <p>Cultivated professional behavior, demonstrated respect for organizational hierarchy, maintained confidentiality, and represented the company with integrity in all interactions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Loading screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Trigger counter animation if it's a stat section
+                    const statNumbers = entry.target.querySelectorAll('.stat-number');
+                    statNumbers.forEach(stat => {
+                        if (!stat.hasAttribute('data-animated')) {
+                            animateCounter(stat);
+                            stat.setAttribute('data-animated', 'true');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Counter animation function
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-count'));
+            const duration = 2500;
+            const increment = target / (duration / 16);
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+                element.classList.add('count-animation');
+            }, 16);
+        }
+
+        // Chart.js configurations
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        font: {
+                            family: "'Inter', sans-serif",
+                            size: 12
+                        },
+                        color: '#6b7280'
+                    }
+                }
+            },
+            animation: {
+                duration: 2500,
+                easing: 'easeInOutQuart'
+            }
+        };
+
+        // Compliance Chart
+        const complianceCtx = document.getElementById('complianceChart').getContext('2d');
+        new Chart(complianceCtx, {
+            type: 'line',
+            data: {
+                labels: ['Start of Internship', 'Week 2', 'Week 4', 'Week 6', 'End of Internship'],
+                datasets: [{
+                    label: 'Compliance Rate (%)',
+                    data: [75, 78, 83, 87, 90],
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    borderWidth: 4,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: '#2563eb',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 3,
+                    pointRadius: 8,
+                    pointHoverRadius: 10
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 70,
+                        max: 95,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            color: '#6b7280'
+                        },
+                        grid: {
+                            color: 'rgba(107, 114, 128, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#6b7280'
+                        },
+                        grid: {
+                            color: 'rgba(107, 114, 128, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Achievement Breakdown Chart
+        const achievementCtx = document.getElementById('achievementChart').getContext('2d');
+        new Chart(achievementCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Meetings Attended', 'Findings Closed', 'Reports Completed', 'Policies Reviewed'],
+                datasets: [{
+                    data: [67, 600, 16, 300],
+                    backgroundColor: [
+                        '#2563eb',
+                        '#1d4ed8',
+                        '#3b82f6',
+                        '#60a5fa'
+                    ],
+                    borderWidth: 0,
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '#ffffff'
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true,
+                            font: {
+                                family: "'Inter', sans-serif",
+                                size: 12
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.tool-card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Smooth scrolling enhancement
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
